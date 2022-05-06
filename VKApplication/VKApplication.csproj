@@ -160,7 +160,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\BaseVM.cs" />
-    <Compile Include="Model\DataBase.cs" />
     <Compile Include="Model\OverlayService.cs" />
     <Compile Include="Model\Item.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
