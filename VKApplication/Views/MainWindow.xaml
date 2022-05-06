@@ -27,20 +27,46 @@
 
     <Grid>
         <ListBox
-                    SelectionMode="Extended"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    ItemsSource="{Binding TestsView}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    SelectedItem="{Binding SelectedTest}" Margin="80,104,492,103">
+            Width="300"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            SelectionMode="Extended"
+            HorizontalContentAlignment="Stretch"
+            Background="Transparent"
+            BorderThickness="0"
+            ItemsSource="{Binding ItemsView}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedItem}" >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Template" Value="{StaticResource TestListItems}" />
+                    <Setter Property="Template" Value="{StaticResource ItemListItems}" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <Button Command="{Binding AddItem}" Content="Add" Margin="658,138,126,469" />
+        <StackPanel 
+            Orientation="Vertical" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top">
+            
+            <Button Command="{Binding AddItem}" 
+                Style="{StaticResource BaseButton}" >
+                <ContentControl 
+                    Height="50" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{StaticResource PlusIcon}" />
+            </Button>
+            <Button Command="{Binding DeleteItem}"
+                CommandParameter="{Binding SelectedItem}"
+                Style="{StaticResource BaseButton}" >
+                <ContentControl 
+                    Height="50" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{StaticResource TrashIcon}" />
+            </Button>
+        </StackPanel>
+        
     </Grid>
 </Window>

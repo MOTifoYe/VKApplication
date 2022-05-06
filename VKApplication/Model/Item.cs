@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VKApplication.Model
 {
-    public class Test : BaseVM
+    public class Item : BaseVM
     {
         public string Name { get; set; }
         public string Comment { get; set; }
