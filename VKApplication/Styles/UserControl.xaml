@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:VKApplication.Styles">
 
-    <ControlTemplate x:Key="TestListItems" TargetType="ListBoxItem">
+    <ControlTemplate x:Key="ItemListItems" TargetType="ListBoxItem">
         <Grid>
             <Border
                 Name="brd"
