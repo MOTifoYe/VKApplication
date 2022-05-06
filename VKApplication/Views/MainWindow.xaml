@@ -1,0 +1,46 @@
+﻿<Window 
+    x:Class="VKApplication.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:VKApplication"
+    xmlns:model="clr-namespace:VKApplication.Model"
+    xmlns:modelvk="clr-namespace:VkNet.Model;assembly=VkNet"
+    xmlns:viewmodel="clr-namespace:VKApplication.ViewModel"
+    mc:Ignorable="d"
+    Name="window"
+    Title="Типа ВК" 
+    Width="900"
+    Height="700"
+    MinWidth="800"
+    MinHeight="560"
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Normal"
+    Background="#ccc"
+    >
+
+    <Window.DataContext>
+        <viewmodel:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <ListBox
+                    SelectionMode="Extended"
+                    HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding TestsView}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    SelectedItem="{Binding SelectedTest}" Margin="80,104,492,103">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Template" Value="{StaticResource TestListItems}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Button Command="{Binding AddItem}" Content="Add" Margin="658,138,126,469" />
+    </Grid>
+</Window>
