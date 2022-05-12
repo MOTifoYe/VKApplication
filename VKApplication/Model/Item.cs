@@ -10,7 +10,7 @@ namespace VKApplication.Model
     public class Item : BaseVM
     {
         public string Name { get; set; }
-        public string Comment { get; set; }
+        public string Descrition { get; set; }
         public string Path { get; set; }
         public string Tematic { get; set; }
         public DateTime UploadDate{ get; set; }
