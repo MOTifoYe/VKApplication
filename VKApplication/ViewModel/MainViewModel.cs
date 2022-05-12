@@ -107,7 +107,7 @@ namespace VKApplication.ViewModel
                                 Items.Add(new Item
                                 {
                                     Name = Path.GetFileNameWithoutExtension(file),
-                                    Comment = DateTime.Now.ToString(),
+                                    UploadDate = DateTime.Now,
                                     Path = Path.GetFullPath(file)
                                 });
 
