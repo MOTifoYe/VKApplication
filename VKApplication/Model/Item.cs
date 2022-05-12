@@ -14,7 +14,8 @@ namespace VKApplication.Model
         public string Descrition { get; set; }
         public string Path { get; set; }
         public double Size { get; set; }
-        public DateTime UploadDate{ get; set; }
+        public DateTime DateUpload { get; set; }
+        public DateTime DateOfChange{ get; set; }
         public ObservableCollection<KeyWordItem> KeyWords { get; set; } = new ObservableCollection<KeyWordItem>();
     }
 }
