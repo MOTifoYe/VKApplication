@@ -77,6 +77,7 @@ namespace VKApplication.ViewModel
                                 {
                                     Name = Path.GetFileNameWithoutExtension(file),
                                     Comment = DateTime.Now.ToString(),
+                                    Path = Path.GetFullPath(file)
                                 });
 
                                 Task.Delay(500).Wait();
@@ -96,10 +97,9 @@ namespace VKApplication.ViewModel
 
 /*
  * И ТАК. 
- * МОЖНО ДОБАВИТЬ ФАЙЛ (ТОЛЬКО ИМЯ)
- *       и комент (дата добавления)
+ * МОЖНО ДОБАВИТЬ ФАЙЛ (имя, дата добавления, полный путь)
  * 
- * НУЖНО ДОБАВИТЬ ВОЗМОЖНОСТЬ ПРОСМОТРА СОДЕРЖИМОГО
+ * НУЖНО ДОБАВИТЬ ВОЗМОЖНОСТЬ ПРОСМОТРА СВОЙСТВ ФАЙЛА (СОДЕРЖИМОГО)
  * НЕ ВАЖНО В КАКОМ ФОРМАТЕ БУДЕТ ФАЙЛ
  * 
  * ЖЕСТТЬ ДА
