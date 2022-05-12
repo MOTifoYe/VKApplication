@@ -37,7 +37,6 @@ namespace VKApplication.ViewModel
                         switch (SearchText.FirstOrDefault())
                         {
                             case '@': return item.KeyWords.FirstOrDefault(s => s.Value.ToLower().Contains(SearchText.Remove(0, 1).ToLower())) != null;
-                            case '#': return item.Tematic?.ToLower().Contains(SearchText.Remove(0, 1).ToLower()) == true;
                             case '$':
                                 if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
                                     return item.UploadDate.Date == date.Date;
@@ -61,8 +60,8 @@ namespace VKApplication.ViewModel
                 OverlayService.GetInstance().Text = str;
             };
             Items = File.Exists("ItemsData.json")
-                ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
-                (File.ReadAllText("ItemsData.json")) : new ObservableCollection<Item>();
+                  ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
+                  (File.ReadAllText("ItemsData.json")) : new ObservableCollection<Item>();
 
             Items.CollectionChanged += (s, e) =>
             {
@@ -73,6 +72,25 @@ namespace VKApplication.ViewModel
             ItemsView = CollectionViewSource.GetDefaultView(Items);
         }
 
+        public ICommand Sort
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+
+
+                    if (ItemsView.SortDescriptions.Count > 0)
+                    {
+                        ItemsView.SortDescriptions.Clear();
+                    }
+                    else
+                    {
+                        ItemsView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                    }
+                });
+            }
+        }
         public ICommand DeleteItem
         {
             get
@@ -107,8 +125,10 @@ namespace VKApplication.ViewModel
                                 Items.Add(new Item
                                 {
                                     Name = Path.GetFileNameWithoutExtension(file),
+                                    Type = Path.GetExtension(file),
+                                    Size = new FileInfo(file).Length / 1024.0,
                                     UploadDate = DateTime.Now,
-                                    Path = Path.GetFullPath(file)
+                                    Path = Path.GetFullPath(file),
                                 });
 
                                 Task.Delay(500).Wait();
@@ -122,6 +142,38 @@ namespace VKApplication.ViewModel
                 });
             }
         }
+        public ICommand GoToUrl
+        {
+            get
+            {
+                return new DelegateCommand<string>((url) =>
+                {
+                    if (new Uri(url).IsFile)
+                    {
+                        Process.Start(new ProcessStartInfo("explorer.exe", " /select, " + url));
+                    }
+                    else
+                    {
+                        Process.Start(url);
+                    }
+
+
+                });
+            }
+        }
+        public ICommand DataClick
+        {
+            get
+            {
+                return new DelegateCommand<DateTime>((date) =>
+                {
+                    SearchText = "$" + date.Date.ToShortDateString();
+
+                });
+            }
+        }
+
+
     }
 }
 
