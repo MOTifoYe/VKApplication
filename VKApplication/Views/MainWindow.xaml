@@ -18,8 +18,14 @@
     ResizeMode="CanResize"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
-    Background="#ccc"
     >
+
+    <Window.Resources>
+        <ObjectDataProvider
+            x:Key="OverlayService"
+            MethodName="GetInstance"
+            ObjectType="{x:Type model:OverlayService}" />
+    </Window.Resources>
 
     <Window.DataContext>
         <viewmodel:MainViewModel />
