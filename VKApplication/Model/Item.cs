@@ -12,6 +12,7 @@ namespace VKApplication.Model
         public string Name { get; set; }
         public string Descrition { get; set; }
         public string Path { get; set; }
+        public double Size { get; set; }
         public string Tematic { get; set; }
         public DateTime UploadDate{ get; set; }
 
