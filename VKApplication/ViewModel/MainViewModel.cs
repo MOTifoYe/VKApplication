@@ -23,6 +23,37 @@ namespace VKApplication.ViewModel
         public Page MainContent { get; set; }
         public Item SelectedItem { get; set; }
 
+        private string _SearchText { get; set; }
+        public string SearchText
+        {
+            get => _SearchText;
+            set
+            {
+                _SearchText = value;
+                ItemsView.Filter = (obj) =>
+                {
+                    if (obj is Item item)
+                    {
+                        switch (SearchText.FirstOrDefault())
+                        {
+                            case '@': return item.KeyWords.FirstOrDefault(s => s.Value.ToLower().Contains(SearchText.Remove(0, 1).ToLower())) != null;
+                            case '#': return item.Tematic?.ToLower().Contains(SearchText.Remove(0, 1).ToLower()) == true;
+                            case '$':
+                                if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
+                                    return item.UploadDate.Date == date.Date;
+                                return false;
+
+                            default: return item.Name.ToLower().Contains(SearchText.ToLower());
+                        }
+                    }
+
+                    return false;
+                };
+                ItemsView.Refresh();
+
+            }
+        }
+        
         public MainViewModel()
         {
             OverlayService.GetInstance().Show = (str) =>
