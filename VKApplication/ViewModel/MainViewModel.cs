@@ -39,7 +39,7 @@ namespace VKApplication.ViewModel
                             case '@': return item.KeyWords.FirstOrDefault(s => s.Value.ToLower().Contains(SearchText.Remove(0, 1).ToLower())) != null;
                             case '$':
                                 if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
-                                    return item.UploadDate.Date == date.Date;
+                                    return (item.DateUpload.Date == date.Date) || (item.DateOfChange.Date == date.Date);
                                 return false;
 
                             default: return item.Name.ToLower().Contains(SearchText.ToLower());
@@ -127,7 +127,8 @@ namespace VKApplication.ViewModel
                                     Name = Path.GetFileNameWithoutExtension(file),
                                     Type = Path.GetExtension(file),
                                     Size = new FileInfo(file).Length / 1024.0,
-                                    UploadDate = DateTime.Now,
+                                    DateUpload = DateTime.Now,
+                                    DateOfChange = new FileInfo(file).LastWriteTime,
                                     Path = Path.GetFullPath(file),
                                 });
 
