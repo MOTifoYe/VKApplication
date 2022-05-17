@@ -392,8 +392,6 @@
                             BorderThickness="0"
                             Foreground="{StaticResource LightBaseBrush}"
                             IsIndeterminate="True" />
-
-
                     </StackPanel>
                 </Grid>
             </Border>
