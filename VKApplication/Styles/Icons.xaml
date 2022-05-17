@@ -10,6 +10,16 @@
         </Viewbox>
     </Grid>
 
+    <Grid x:Key="SearchIcon2">
+        <Viewbox Margin="5" Stretch="Uniform">
+            <Grid>
+                <Path Data="M 0 -132.08093 C 72.90867 -132.08093 132.08093 -72.90868 132.08093 0 C 132.08093 72.90867 72.90868 132.08093 0 132.08093 C -72.90867 132.08093 -132.08093 72.90868 -132.08093 0 C -132.08093 -72.90867 -72.90868 -132.08093 0 -132.08093 z" Fill="White" />
+                <Path Data="M 47.5 0 C 73.72 0 95 21.28 95 47.5 C 95 73.72 73.72 95 47.5 95 C 21.28 95 0 73.72 0 47.5 C 0 21.28 21.28 0 47.5 0 z" Fill="White" />
+                <Path Data="M -81.6547 -47.5 L 81.6547 -47.5 L 81.6547 47.5 L -81.6547 47.5 z" Fill="White" />
+            </Grid>
+        </Viewbox>
+    </Grid>
+    
     <Grid x:Key="PlusIcon">
         <Viewbox Margin="5" Stretch="Uniform">
             <Grid>
