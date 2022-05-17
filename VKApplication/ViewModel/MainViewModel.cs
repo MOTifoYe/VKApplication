@@ -112,6 +112,8 @@ namespace VKApplication.ViewModel
                 {
                     var opd = new OpenFileDialog();
                     opd.Multiselect = true;
+                    opd.Filter = "Audio (*.mp3,*.acc,*.wma,*.wav)|*.acc;*.mp3;*.wma;*.wav|" +
+                                 "All Files (*.*)|*.*";
                     if (opd.ShowDialog() == true)
                     {
                         await Task.Factory.StartNew(() =>
