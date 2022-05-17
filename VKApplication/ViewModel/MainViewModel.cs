@@ -133,7 +133,7 @@ namespace VKApplication.ViewModel
                                     Path = Path.GetFullPath(file),
                                 });
 
-                                Task.Delay(500).Wait();
+                                Task.Delay(75).Wait();
                             }
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
 
