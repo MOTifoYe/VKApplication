@@ -233,30 +233,6 @@
                                             TextWrapping="Wrap" />
                                 </UniformGrid>
 
-                                <!--DateUpload-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Дата загрузки: " />
-
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Cursor="Hand"
-                                            Style="{StaticResource BaseText}"
-                                            Text="{Binding DateUpload, StringFormat={}{0:dd.MM.yyyy}}"
-                                            TextWrapping="Wrap">
-                                        <TextBlock.InputBindings>
-                                            <MouseBinding
-                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.DataClick}"
-                                                    CommandParameter="{Binding DateUpload}"
-                                                    Gesture="LeftClick" />
-                                        </TextBlock.InputBindings>
-                                    </TextBlock>
-                                </UniformGrid>
-
                                 <!--DateOfChange-->
                                 <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
                                     <TextBlock

@@ -15,6 +15,8 @@ using VKApplication.Model;
 //using VKApplication.App.Model;
 using VKApplication.App.ViewModel;
 using VKApplication.App.Views;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Windows;
 
 namespace VKApplication.ViewModel
 {
@@ -40,7 +42,7 @@ namespace VKApplication.ViewModel
                         {
                            case '$':
                                 if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
-                                    return (item.DateUpload.Date == date.Date) || (item.DateOfChange.Date == date.Date);
+                                    return (item.DateOfChange.Date == date.Date);
                                 return false;
 
                             default: return item.Name.ToLower().Contains(SearchText.ToLower());
@@ -110,7 +112,8 @@ namespace VKApplication.ViewModel
                 {
                     var opd = new OpenFileDialog();
                     opd.Multiselect = true;
-                    opd.Filter = "Audio (*.mp3,*.acc,*.wma,*.wav)|*.acc;*.mp3;*.wma;*.wav|" +
+                    //opd.Filter = "Audio (*.mp3,*.acc,*.wma,*.wav)|*.acc;*.mp3;*.wma;*.wav|" +
+                    opd.Filter = "Audio (*.mp3)|*.mp3|" +
                                  "All Files (*.*)|*.*";
                     if (opd.ShowDialog() == true)
                     {
@@ -128,7 +131,6 @@ namespace VKApplication.ViewModel
                                     Name = Path.GetFileNameWithoutExtension(file),
                                     Type = Path.GetExtension(file),
                                     Size = new FileInfo(file).Length / 1024.0,
-                                    DateUpload = DateTime.Now,
                                     DateOfChange = new FileInfo(file).LastWriteTime,
                                     Path = Path.GetFullPath(file),
                                 });
@@ -139,6 +141,56 @@ namespace VKApplication.ViewModel
 
                             OverlayService.GetInstance().Close();
                         });
+                    }
+
+                });
+            }
+        }
+        public ICommand FindItem
+        {
+            get
+            {
+                return new DelegateCommand(async () =>
+                {
+                    
+                    var opd = new CommonOpenFileDialog();
+                    opd.Title = "Выбор папки";
+                    opd.Multiselect = false;
+                    opd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    opd.IsFolderPicker = true;
+
+                    if (opd.ShowDialog() == CommonFileDialogResult.Ok)
+                    {
+                        await Task.Factory.StartNew(() =>
+                        {
+                            OverlayService.GetInstance().Show("Загрузка информации...");
+
+                            string[] files = Directory.GetFiles(opd.FileName);
+
+                            foreach(string file in files)
+                            {
+                                if(Path.GetExtension(file) == ".mp3")
+                                {
+                                    OverlayService.GetInstance().Show($"Загрузка информации...\n{file}");
+                                    Item item = new Item
+                                    {
+                                        Name = Path.GetFileNameWithoutExtension(file),
+                                        Type = Path.GetExtension(file),
+                                        Size = new FileInfo(file).Length / 1024.0,
+                                        DateOfChange = new FileInfo(file).LastWriteTime,
+                                        Path = Path.GetFullPath(file),
+                                    };
+                                    if (!Items.Contains(item))
+                                        Items.Add(item);
+                                    //Task.Delay(20).Wait();
+                                }
+                            }
+
+                            SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
+                            OverlayService.GetInstance().Close();
+                        });
+                        
+
                     }
 
                 });
