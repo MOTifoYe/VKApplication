@@ -50,7 +50,7 @@
                 <StackPanel
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    
+
                     <Button 
                         Command="{Binding AddItem}" 
                         Style="{StaticResource BaseButton}">
@@ -70,9 +70,13 @@
                         Style="{StaticResource BaseButton}">
                         <ContentControl Height="50" Content="{StaticResource TrashIcon}" />
                     </Button>
+
+                    <Button
+                        Command="{Binding FindItem}"
+                        Style="{StaticResource BaseButton}">
+                        <ContentControl Height="50" Content="{StaticResource SearchIcon}" />
+                    </Button>
                 </StackPanel>
-
-
             </Grid>
            
             <!--Поиск-->
