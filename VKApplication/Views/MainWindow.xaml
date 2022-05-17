@@ -10,7 +10,7 @@
     xmlns:viewmodel="clr-namespace:VKApplication.ViewModel"
     mc:Ignorable="d"
     Name="window"
-    Title="Типа ВК" 
+    Title="Тип74" 
     Width="900"
     Height="700"
     MinWidth="800"
