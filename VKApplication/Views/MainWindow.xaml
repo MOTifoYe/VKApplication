@@ -343,7 +343,8 @@
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock
                             Name="overlayText"
-                            FontSize="30"
+                            FontSize="25"
+                            TextWrapping="Wrap"
                             Text="{Binding Source={StaticResource OverlayService}, Path=Text}"
                             TextAlignment="Center" />
                         <ProgressBar
