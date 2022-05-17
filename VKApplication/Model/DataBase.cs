@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using VKApplication.Model;
 
-namespace VKApplication.Model
+namespace VKApplication.App.Model
 {
     public class DataBase : BaseVM
     {

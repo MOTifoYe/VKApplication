@@ -12,7 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using VKApplication.Model;
-using VKApplication.ViewModel;
+using VKApplication.App.Model;
+using VKApplication.App.ViewModel;
+using VKApplication.App.Views;
 
 namespace VKApplication.ViewModel
 {
@@ -143,6 +145,24 @@ namespace VKApplication.ViewModel
                 });
             }
         }
+        public ICommand EditItem
+        {
+            get
+            {
+                return new DelegateCommand<Item>((item) =>
+                {
+                    var w = new EditItemWindow();
+                    var vm = new EditItemViewModel
+                    {
+                        ItemInfo = item,
+                    };
+                    w.DataContext = vm;
+                    w.ShowDialog();
+                    File.WriteAllText("VideosData.json", JsonConvert.SerializeObject(Items));
+
+                }, (item) => item != null);
+            }
+        }
         public ICommand GoToUrl
         {
             get
@@ -181,10 +201,9 @@ namespace VKApplication.ViewModel
 
 /*
  * И ТАК. 
- * МОЖНО ДОБАВИТЬ ФАЙЛ (имя, дата добавления, полный путь)
+ * МОЖНО ДОБАВИТЬ ФАЙЛ 
  * 
- * НУЖНО ДОБАВИТЬ ВОЗМОЖНОСТЬ ПРОСМОТРА СВОЙСТВ ФАЙЛА (СОДЕРЖИМОГО)
- * НЕ ВАЖНО В КАКОМ ФОРМАТЕ БУДЕТ ФАЙЛ
+ * ДОБАВИТЬ КОМАНДУ ИЗМЕНЕНИЯ
  * 
  * ЖЕСТТЬ ДА
  *

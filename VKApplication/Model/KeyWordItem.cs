@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VKApplication.Model;
 
-namespace VKApplication.Model
+namespace VKApplication.App.Model
 {
     public class KeyWordItem : BaseVM
     {
