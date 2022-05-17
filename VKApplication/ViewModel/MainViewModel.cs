@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using VKApplication.Model;
-using VKApplication.App.Model;
+//using VKApplication.App.Model;
 using VKApplication.App.ViewModel;
 using VKApplication.App.Views;
 
@@ -38,8 +38,7 @@ namespace VKApplication.ViewModel
                     {
                         switch (SearchText.FirstOrDefault())
                         {
-                            case '@': return item.KeyWords.FirstOrDefault(s => s.Value.ToLower().Contains(SearchText.Remove(0, 1).ToLower())) != null;
-                            case '$':
+                           case '$':
                                 if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
                                     return (item.DateUpload.Date == date.Date) || (item.DateOfChange.Date == date.Date);
                                 return false;
@@ -158,7 +157,6 @@ namespace VKApplication.ViewModel
                     };
                     w.DataContext = vm;
                     w.ShowDialog();
-                    File.WriteAllText("VideosData.json", JsonConvert.SerializeObject(Items));
 
                 }, (item) => item != null);
             }

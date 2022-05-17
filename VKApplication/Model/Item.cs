@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VKApplication.App.Model;
+//using VKApplication.App.Model;
 
 namespace VKApplication.Model
 {
@@ -17,6 +17,5 @@ namespace VKApplication.Model
         public double Size { get; set; }
         public DateTime DateUpload { get; set; }
         public DateTime DateOfChange{ get; set; }
-        public ObservableCollection<KeyWordItem> KeyWords { get; set; } = new ObservableCollection<KeyWordItem>();
     }
 }
