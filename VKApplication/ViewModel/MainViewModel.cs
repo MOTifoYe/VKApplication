@@ -64,11 +64,9 @@ namespace VKApplication.ViewModel
                   ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
                   (File.ReadAllText("ItemsData.json")) : new ObservableCollection<Item>();
 
-            Items.CollectionChanged += (s, e) =>
-            {
-                File.WriteAllText("ItemsData.json", JsonConvert.SerializeObject
-                    (Items));
-            };
+            Items.CollectionChanged += (s, e) => 
+                File.WriteAllText("ItemsData.json", JsonConvert.SerializeObject(Items));
+
             BindingOperations.EnableCollectionSynchronization(Items, new object());
             ItemsView = CollectionViewSource.GetDefaultView(Items);
         }
