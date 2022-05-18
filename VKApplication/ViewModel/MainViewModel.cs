@@ -180,9 +180,12 @@ namespace VKApplication.ViewModel
                                         DateOfChange = new FileInfo(file).LastWriteTime,
                                         Path = Path.GetFullPath(file),
                                     };
+
+                                    //MessageBox.Show($"{ItemsView.Contains(item.Name)}");
+                                    
                                     if (!Items.Contains(item))
                                         Items.Add(item);
-                                    //Task.Delay(20).Wait();
+                                    Task.Delay(1).Wait();
                                 }
                             }
 
