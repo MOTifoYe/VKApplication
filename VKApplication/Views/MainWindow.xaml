@@ -94,11 +94,26 @@
                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                 </DockPanel>
 
-                <Button
-                    Margin="10"
-                    Command="{Binding Sort}"
-                    Content="Названия"
-                    Style="{StaticResource BaseButton}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Margin="10 10 5 10"
+                        Content="Сортировка"
+                        Command="{Binding Sort}"
+                        Style="{StaticResource BaseButton}" />
+                    <Button
+                        Grid.Column="1"
+                        Margin="5 10 10 10"
+                        Height="30"
+                        Width="30"
+                        Content="X"
+                        Command="{Binding Sort}"
+                        CommandParameter="1"
+                        Style="{StaticResource BaseButton}" />
+                </Grid>
             </StackPanel>
 
             <!--Список файлов-->

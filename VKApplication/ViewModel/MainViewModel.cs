@@ -77,13 +77,17 @@ namespace VKApplication.ViewModel
         {
             get
             {
-                return new DelegateCommand(() =>
+                return new DelegateCommand<string>((p) =>
                 {
 
-
-                    if (ItemsView.SortDescriptions.Count > 0)
-                    {
+                    if (ItemsView.SortDescriptions.Count > 0 && p != null)
                         ItemsView.SortDescriptions.Clear();
+                    else if (ItemsView.SortDescriptions.Count > 0)
+                    {
+                        if (ItemsView.SortDescriptions[0].Direction == ListSortDirection.Ascending)
+                            ItemsView.SortDescriptions.Insert(0, new SortDescription("Name", ListSortDirection.Descending));
+                        else if (ItemsView.SortDescriptions[0].Direction == ListSortDirection.Descending)
+                            ItemsView.SortDescriptions.Insert(0, new SortDescription("Name", ListSortDirection.Ascending));
                     }
                     else
                     {
@@ -135,7 +139,7 @@ namespace VKApplication.ViewModel
                                     Path = Path.GetFullPath(file),
                                 });
 
-                                Task.Delay(75).Wait();
+                                Task.Delay(1).Wait();
                             }
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
 
