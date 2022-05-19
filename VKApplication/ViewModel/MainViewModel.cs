@@ -115,16 +115,18 @@ namespace VKApplication.ViewModel
                 return new DelegateCommand(async () =>
                 {
                     var opd = new OpenFileDialog();
+                    opd.Title = "Выбор файлов";
                     opd.Multiselect = true;
                     //opd.Filter = "Audio (*.mp3,*.acc,*.wma,*.wav)|*.acc;*.mp3;*.wma;*.wav|" +
                     opd.Filter = "Audio (*.mp3)|*.mp3|" +
                                  "All Files (*.*)|*.*";
+
                     if (opd.ShowDialog() == true)
                     {
                         await Task.Factory.StartNew(() =>
                         {
                             OverlayService.GetInstance().Show("Загрузка информации...");
-
+                            int added = 0;
                             for (int i = 0; i < opd.FileNames.Length; i++)
                             {
                                 OverlayService.GetInstance().Show($"Загрузка информации...{Environment.NewLine}{i}/{opd.FileNames.Length}");
@@ -138,11 +140,14 @@ namespace VKApplication.ViewModel
                                     DateOfChange = new FileInfo(file).LastWriteTime,
                                     Path = Path.GetFullPath(file),
                                 });
+                                added++;
 
                                 Task.Delay(1).Wait();
                             }
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
-
+                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}");
+                            OverlayService.GetInstance().ProgressBarHidden = true;
+                            Task.Delay(3000).Wait();
                             OverlayService.GetInstance().Close();
                         });
                     }
@@ -169,14 +174,15 @@ namespace VKApplication.ViewModel
                         {
                             OverlayService.GetInstance().Show("Загрузка информации...");
 
-                            string[] files = Directory.GetFiles(opd.FileName);
+                            string[] files = Directory.GetFiles(opd.FileName, "*.mp3", SearchOption.AllDirectories);
+                            int added = 0;
 
                             foreach(string file in files)
                             {
                                 if(Path.GetExtension(file) == ".mp3")
                                 {
                                     OverlayService.GetInstance().Show($"Загрузка информации...\n{file}");
-                                    Item item = new Item
+                                    Item newItem = new Item
                                     {
                                         Name = Path.GetFileNameWithoutExtension(file),
                                         Type = Path.GetExtension(file),
@@ -185,15 +191,29 @@ namespace VKApplication.ViewModel
                                         Path = Path.GetFullPath(file),
                                     };
 
-                                    //MessageBox.Show($"{ItemsView.Contains(item.Name)}");
-                                    
-                                    if (!Items.Contains(item))
-                                        Items.Add(item);
+                                    bool isExist = false;
+                                    foreach (Item item in Items)
+                                    {
+                                        if (newItem.Name.Equals(item.Name))
+                                            isExist = true;
+                                    }
+
+                                    //MessageBox.Show($"{isExist}");
+
+                                    if (!isExist)
+                                    {
+                                        Items.Add(newItem);
+                                        added++;
+                                    }
+
                                     Task.Delay(1).Wait();
                                 }
                             }
 
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
+                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}");
+                            OverlayService.GetInstance().ProgressBarHidden = true;
+                            Task.Delay(3000).Wait();
                             OverlayService.GetInstance().Close();
                         });
                         

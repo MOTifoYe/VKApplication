@@ -17,10 +17,12 @@ namespace VKApplication.Model
         public Action<string> Show { get; set; }
 
         public string Text { get; set; } = "";
+        public bool ProgressBarHidden { get; set; } = false;
 
         public void Close()
         {
             Text = "";
+            ProgressBarHidden = false;
         }
 
     }

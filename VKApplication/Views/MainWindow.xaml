@@ -339,12 +339,23 @@
                             Text="{Binding Source={StaticResource OverlayService}, Path=Text}"
                             TextAlignment="Center" />
                         <ProgressBar
+                            Name="overlayProgress"
                             Height="20"
                             Margin="20"
                             Background="{StaticResource LightBrush}"
                             BorderThickness="0"
                             Foreground="{StaticResource LightBaseBrush}"
-                            IsIndeterminate="True" />
+                            IsIndeterminate="True" >
+                            <ProgressBar.Style>
+                                <Style TargetType="ProgressBar">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={StaticResource OverlayService}, Path=ProgressBarHidden}" Value="True" >
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ProgressBar.Style>
+                        </ProgressBar>
                     </StackPanel>
                 </Grid>
             </Border>
