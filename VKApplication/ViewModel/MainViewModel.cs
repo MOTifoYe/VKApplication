@@ -58,10 +58,13 @@ namespace VKApplication.ViewModel
         
         public MainViewModel()
         {
-            OverlayService.GetInstance().Show = (str) =>
+            OverlayService.GetInstance().Show = (str, vis) =>
             {
                 OverlayService.GetInstance().Text = str;
+                OverlayService.GetInstance().ProgressBarVisible = vis;
             };
+
+
             Items = File.Exists("ItemsData.json")
                   ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
                   (File.ReadAllText("ItemsData.json")) : new ObservableCollection<Item>();
@@ -125,11 +128,11 @@ namespace VKApplication.ViewModel
                     {
                         await Task.Factory.StartNew(() =>
                         {
-                            OverlayService.GetInstance().Show("Загрузка информации...");
+                            OverlayService.GetInstance().Show("Загрузка информации...", true);
                             int added = 0;
                             for (int i = 0; i < opd.FileNames.Length; i++)
                             {
-                                OverlayService.GetInstance().Show($"Загрузка информации...{Environment.NewLine}{i}/{opd.FileNames.Length}");
+                                OverlayService.GetInstance().Show($"Загрузка информации...{Environment.NewLine}{i}/{opd.FileNames.Length}", true);
                                 var file = opd.FileNames[i];
 
                                 Items.Add(new Item
@@ -145,9 +148,8 @@ namespace VKApplication.ViewModel
                                 Task.Delay(1).Wait();
                             }
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
-                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}");
-                            OverlayService.GetInstance().ProgressBarHidden = true;
-                            Task.Delay(3000).Wait();
+                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}", false);
+                            Task.Delay(2000).Wait();
                             OverlayService.GetInstance().Close();
                         });
                     }
@@ -172,7 +174,7 @@ namespace VKApplication.ViewModel
                     {
                         await Task.Factory.StartNew(() =>
                         {
-                            OverlayService.GetInstance().Show("Загрузка информации...");
+                            OverlayService.GetInstance().Show("Загрузка информации...", true);
 
                             string[] files = Directory.GetFiles(opd.FileName, "*.mp3", SearchOption.AllDirectories);
                             int added = 0;
@@ -181,7 +183,7 @@ namespace VKApplication.ViewModel
                             {
                                 if(Path.GetExtension(file) == ".mp3")
                                 {
-                                    OverlayService.GetInstance().Show($"Загрузка информации...\n{file}");
+                                    OverlayService.GetInstance().Show($"Загрузка информации...\n{file}", true);
                                     Item newItem = new Item
                                     {
                                         Name = Path.GetFileNameWithoutExtension(file),
@@ -211,9 +213,8 @@ namespace VKApplication.ViewModel
                             }
 
                             SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
-                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}");
-                            OverlayService.GetInstance().ProgressBarHidden = true;
-                            Task.Delay(3000).Wait();
+                            OverlayService.GetInstance().Show($"Добавлено элементов: {added}", false);
+                            Task.Delay(2000).Wait();
                             OverlayService.GetInstance().Close();
                         });
                         

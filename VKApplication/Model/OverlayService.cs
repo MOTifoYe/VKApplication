@@ -14,15 +14,15 @@ namespace VKApplication.Model
 
         private OverlayService() { }
 
-        public Action<string> Show { get; set; }
+        public Action<string, bool> Show { get; set; }
 
         public string Text { get; set; } = "";
-        public bool ProgressBarHidden { get; set; } = false;
+        public bool ProgressBarVisible { get; set; } = true;
 
         public void Close()
         {
             Text = "";
-            ProgressBarHidden = false;
+            ProgressBarVisible = true;
         }
 
     }
