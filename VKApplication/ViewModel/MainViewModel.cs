@@ -45,7 +45,7 @@ namespace VKApplication.ViewModel
                                     return (item.DateOfChange.Date == date.Date);
                                 return false;
 
-                            default: return item.Name.ToLower().Contains(SearchText.ToLower());
+                            default: return item.Name.ToLower().Contains(SearchText.ToLower()) || item.Path.ToLower().Contains(SearchText.ToLower());
                         }
                     }
 
@@ -176,39 +176,47 @@ namespace VKApplication.ViewModel
                         {
                             OverlayService.GetInstance().Show("Загрузка информации...", true);
 
-                            string[] files = Directory.GetFiles(opd.FileName, "*.mp3", SearchOption.AllDirectories);
+                            var files = GetFiles(opd.FileName, "*.mp3");
                             int added = 0;
 
                             foreach(string file in files)
                             {
-                                if(Path.GetExtension(file) == ".mp3")
+                                try
                                 {
-                                    OverlayService.GetInstance().Show($"Загрузка информации...\n{file}", true);
-                                    Item newItem = new Item
+                                    if (Path.GetExtension(file) == ".mp3")
                                     {
-                                        Name = Path.GetFileNameWithoutExtension(file),
-                                        Type = Path.GetExtension(file),
-                                        Size = new FileInfo(file).Length / 1024.0,
-                                        DateOfChange = new FileInfo(file).LastWriteTime,
-                                        Path = Path.GetFullPath(file),
-                                    };
+                                        OverlayService.GetInstance().Show($"Загрузка информации...\n{file}", true);
+                                        Item newItem = new Item
+                                        {
+                                            Name = Path.GetFileNameWithoutExtension(file),
+                                            Type = Path.GetExtension(file),
+                                            Size = new FileInfo(file).Length / 1024.0,
+                                            DateOfChange = new FileInfo(file).LastWriteTime,
+                                            Path = Path.GetFullPath(file),
+                                        };
 
-                                    bool isExist = false;
-                                    foreach (Item item in Items)
-                                    {
-                                        if (newItem.Name.Equals(item.Name))
-                                            isExist = true;
+                                        bool isExist = false;
+                                        foreach (Item item in Items)
+                                        {
+                                            if (newItem.Name.Equals(item.Name))
+                                                isExist = true;
+                                        }
+
+                                        //MessageBox.Show($"{isExist}");
+
+                                        if (!isExist)
+                                        {
+                                            Items.Add(newItem);
+                                            added++;
+                                        }
+
+                                        Task.Delay(1).Wait();
                                     }
 
-                                    //MessageBox.Show($"{isExist}");
-
-                                    if (!isExist)
-                                    {
-                                        Items.Add(newItem);
-                                        added++;
-                                    }
-
-                                    Task.Delay(1).Wait();
+                                }
+                                catch (Exception ex)
+                                {
+                                    OverlayService.GetInstance().Show($"Ошибка\n{ex.Message}",false);
                                 }
                             }
 
@@ -272,17 +280,22 @@ namespace VKApplication.ViewModel
             }
         }
 
+        private System.Collections.Generic.List<string> GetFiles(string path, string pattern)
+        {
+            var files = new System.Collections.Generic.List<string>();
+
+            try
+            {
+                files.AddRange(Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly));
+                foreach (var directory in Directory.GetDirectories(path))
+                    files.AddRange(GetFiles(directory, pattern));
+            }
+            catch (UnauthorizedAccessException) { }
+            catch (DirectoryNotFoundException) { }
+
+            return files;
+        }
 
     }
 }
 
-
-/*
- * И ТАК. 
- * МОЖНО ДОБАВИТЬ ФАЙЛ 
- * 
- * ДОБАВИТЬ КОМАНДУ ИЗМЕНЕНИЯ
- * 
- * ЖЕСТТЬ ДА
- *
- */

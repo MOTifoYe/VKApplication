@@ -85,23 +85,7 @@
                                     TextWrapping="Wrap" />
                             </UniformGrid>
 
-                            <!--DateUpload-->
-                            <UniformGrid Background="{StaticResource DarkBrush}" Columns="2">
-                                <TextBlock
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BaseText}"
-                                    Text="Загружено: " />
-
-                                <TextBlock
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BaseText}"
-                                    Text="{Binding ItemInfo.DateUpload, StringFormat={}{0:dd.MM.yyyy}}"
-                                    TextWrapping="Wrap" />
-                            </UniformGrid>
-
-                            <!--Path-->
+                           <!--Path-->
                             <UniformGrid Background="{StaticResource DarkBrush}" Columns="2">
                                 <TextBlock
                                     Margin="10"
@@ -112,6 +96,7 @@
                                 <TextBox
                                     Margin="10"
                                     VerticalAlignment="Center"
+                                    IsReadOnly="True"
                                     Foreground="{StaticResource MediumBaseBrush}"
                                     Style="{StaticResource BaseTextBox}"
                                     Text="{Binding ItemInfo.Path}"
