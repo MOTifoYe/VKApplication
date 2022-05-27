@@ -25,6 +25,10 @@
             x:Key="OverlayService"
             MethodName="GetInstance"
             ObjectType="{x:Type model:OverlayService}" />
+        <ObjectDataProvider
+            x:Key="AudioService"
+            MethodName="GetInstance"
+            ObjectType="{x:Type model:AudioService}" />
     </Window.Resources>
 
     <Window.DataContext>
@@ -151,162 +155,246 @@
             </Grid>
         </Grid>
 
-        <!--Описание-->
         <Grid
-            Grid.Column="1"
-            Background="{StaticResource LightBrush}"
-            DataContext="{Binding SelectedItem}">
+            Grid.Column="1">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <!-- Плеер -->
+            <Grid
+                Grid.Row="0"
+                Background="{StaticResource LightBrush}">
 
-            <ScrollViewer>
-                <ScrollViewer.Style>
-                    <Style TargetType="ScrollViewer">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ScrollViewer.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Name="root" Margin="10">
+                <StackPanel 
+                    Grid.Column="0"
+                    Margin="10,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    
+                    <Button
+                        Command="{Binding StartPlay}"
+                        CommandParameter="{Binding SelectedItem}"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource BaseButton}">
+                        <ContentControl  
+                            Width="24"
+                            Height="24"
+                            Margin="-6,-6,0,0"
+                            Content="{StaticResource PlayIcon}"/>
+                    </Button>
+                    <Button
+                        Command="{Binding PlayPause}"
+                        CommandParameter="{Binding SelectedItem}"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource BaseButton}">
+                        <ContentControl  
+                            Width="24"
+                            Height="24"
+                            Margin="-6,-6,0,0"
+                            Content="{StaticResource PauseIcon}"/>
+                    </Button>
+                    <Button
+                        Command="{Binding Testt}"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource BaseButton}"
+                        />
+
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Column="1">
+
                     <TextBlock
-                        Margin="10"
-                        FontSize="{StaticResource H1}"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        DataContext="{Binding SelectedItem}"
                         Style="{StaticResource BaseText}"
-                        Text="{Binding Name}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
+                        Text="{Binding Source={StaticResource AudioService}, Path=CurrentItem.Name }"
+                        TextWrapping="Wrap"
+                        />
 
-                    <Grid Margin="0,30,0,0">
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource BaseText}"
+                        Text="{Binding Source={StaticResource AudioService}, Path=IsPlaying}"
+                        TextWrapping="Wrap"
+                        />
+                </StackPanel>
+                
 
-                        <Border CornerRadius="5">
-                            <Border.OpacityMask>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Border
-                                            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
-                                            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"
-                                            Background="Black"
-                                            CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
-                                            SnapsToDevicePixels="True" />
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.OpacityMask>
+            </Grid>
+            
+            <!--Описание-->
+            <Grid
+                Grid.Row="1"
+                Background="{StaticResource LightBrush}"
+                DataContext="{Binding SelectedItem}">
 
-                            <StackPanel HorizontalAlignment="Center">
+                <ScrollViewer>
+                    <ScrollViewer.Style>
+                        <Style TargetType="ScrollViewer">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ScrollViewer.Style>
 
-                                <!--Descrition-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Описание: " />
+                    <StackPanel Name="root" Margin="10">
+                        <TextBlock
+                            Margin="10"
+                            FontSize="{StaticResource H1}"
+                            Style="{StaticResource BaseText}"
+                            Text="{Binding Name}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
 
-                                    <ScrollViewer
-                                            MaxHeight="100"
-                                            HorizontalScrollBarVisibility="Disabled"
-                                            VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="0,30,0,0">
+
+                            <Border CornerRadius="5">
+                                <Border.OpacityMask>
+                                    <VisualBrush>
+                                        <VisualBrush.Visual>
+                                            <Border
+                                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                Background="Black"
+                                                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                SnapsToDevicePixels="True" />
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Border.OpacityMask>
+
+                                <StackPanel HorizontalAlignment="Center">
+
+                                    <!--Descrition-->
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
                                         <TextBlock
                                                 Margin="10"
                                                 VerticalAlignment="Center"
                                                 Style="{StaticResource BaseText}"
-                                                Text="{Binding Descrition}"
+                                                Text="Описание: " />
+
+                                        <ScrollViewer
+                                                MaxHeight="100"
+                                                HorizontalScrollBarVisibility="Disabled"
+                                                VerticalScrollBarVisibility="Auto">
+                                            <TextBlock
+                                                    Margin="10"
+                                                    VerticalAlignment="Center"
+                                                    Style="{StaticResource BaseText}"
+                                                    Text="{Binding Descrition}"
+                                                    TextWrapping="Wrap" />
+                                        </ScrollViewer>
+                                    </UniformGrid>
+
+                                    <!--Type-->
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="Тип: " />
+
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="{Binding Type}"
                                                 TextWrapping="Wrap" />
-                                    </ScrollViewer>
-                                </UniformGrid>
+                                    </UniformGrid>
 
-                                <!--Type-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Тип: " />
+                                    <!--Size-->
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="Размер: " />
 
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="{Binding Type}"
-                                            TextWrapping="Wrap" />
-                                </UniformGrid>
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="{Binding Size, ConverterCulture=ru-ru, StringFormat={}{0:n} КБ}"
+                                                TextWrapping="Wrap" />
+                                    </UniformGrid>
 
-                                <!--Size-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Размер: " />
+                                    <!--DateOfChange-->
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="Дата изменения: " />
 
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="{Binding Size, ConverterCulture=ru-ru, StringFormat={}{0:n} КБ}"
-                                            TextWrapping="Wrap" />
-                                </UniformGrid>
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Cursor="Hand"
+                                                Style="{StaticResource BaseText}"
+                                                Text="{Binding DateOfChange, StringFormat={}{0:dd.MM.yyyy}}"
+                                                TextWrapping="Wrap">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding
+                                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.DataClick}"
+                                                        CommandParameter="{Binding DateOfChange}"
+                                                        Gesture="LeftClick" />
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
+                                    </UniformGrid>
 
-                                <!--DateOfChange-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Дата изменения: " />
+                                    <!--Path-->
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource BaseText}"
+                                                Text="Локальный путь: " />
 
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Cursor="Hand"
-                                            Style="{StaticResource BaseText}"
-                                            Text="{Binding DateOfChange, StringFormat={}{0:dd.MM.yyyy}}"
-                                            TextWrapping="Wrap">
-                                        <TextBlock.InputBindings>
-                                            <MouseBinding
-                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.DataClick}"
-                                                    CommandParameter="{Binding DateOfChange}"
-                                                    Gesture="LeftClick" />
-                                        </TextBlock.InputBindings>
-                                    </TextBlock>
-                                </UniformGrid>
+                                        <TextBlock
+                                                Margin="10"
+                                                VerticalAlignment="Center"
+                                                Cursor="Hand"
+                                                Foreground="{StaticResource MediumBaseBrush}"
+                                                Style="{StaticResource BaseText}"
+                                                Text="{Binding Path}"
+                                                TextDecorations="Underline"
+                                                TextWrapping="Wrap">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding
+                                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.GoToUrl}"
+                                                        CommandParameter="{Binding Path}"
+                                                        Gesture="LeftClick" />
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
+                                    </UniformGrid>
 
-                                <!--Path-->
-                                <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource BaseText}"
-                                            Text="Локальный путь: " />
+                                </StackPanel>
+                            </Border>
 
-                                    <TextBlock
-                                            Margin="10"
-                                            VerticalAlignment="Center"
-                                            Cursor="Hand"
-                                            Foreground="{StaticResource MediumBaseBrush}"
-                                            Style="{StaticResource BaseText}"
-                                            Text="{Binding Path}"
-                                            TextDecorations="Underline"
-                                            TextWrapping="Wrap">
-                                        <TextBlock.InputBindings>
-                                            <MouseBinding
-                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.GoToUrl}"
-                                                    CommandParameter="{Binding Path}"
-                                                    Gesture="LeftClick" />
-                                        </TextBlock.InputBindings>
-                                    </TextBlock>
-                                </UniformGrid>
-
-                            </StackPanel>
-                        </Border>
-
-                    </Grid>
+                        </Grid>
 
 
-                </StackPanel>
-            </ScrollViewer>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
+        
 
         <!--  Оверлей  -->
         <Grid

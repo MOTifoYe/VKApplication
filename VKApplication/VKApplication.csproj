@@ -211,6 +211,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\AudioService.cs" />
     <Compile Include="Model\BaseVM.cs" />
     <Compile Include="Model\OverlayService.cs" />
     <Compile Include="Model\Item.cs" />

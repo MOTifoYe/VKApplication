@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -8,15 +9,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using VKApplication.Model;
 //using VKApplication.App.Model;
-using VKApplication.App.ViewModel;
+using VKApplication.Model;
 using VKApplication.App.Views;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Windows;
+using VKApplication.App.ViewModel;
 
 namespace VKApplication.ViewModel
 {
@@ -276,6 +276,46 @@ namespace VKApplication.ViewModel
                 {
                     SearchText = "$" + date.Date.ToShortDateString();
 
+                });
+            }
+        }
+
+        public ICommand StartPlay
+        {
+            get
+            {
+                return new DelegateCommand<Item>((item) =>
+                {
+                    AudioService.GetInstance().StartPlay(item);
+                }, (item) => item != null);
+
+                //return new DelegateCommand<Item>((item) =>
+                //{
+                //    AudioService.GetMediaPlayer().Open(new Uri(item.Path));
+                //    AudioService.GetMediaPlayer().Play();
+
+                //}, (item) => item != null);
+            }
+        }
+
+        public ICommand PlayPause
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    AudioService.GetInstance().PlayPause();
+                }, ()=>AudioService.GetInstance().CurrentItem != null);
+            }
+        }
+
+        public ICommand Testt
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    MessageBox.Show($"{AudioService.GetMediaPlayer().CanPause}");
                 });
             }
         }
