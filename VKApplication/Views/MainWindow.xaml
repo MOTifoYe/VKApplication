@@ -122,20 +122,21 @@
 
             <!--Список файлов-->
             <ListBox
-                    SelectionMode="Extended"
-                    Grid.Row="2"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    ItemsSource="{Binding ItemsView}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    SelectedItem="{Binding SelectedItem}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Template" Value="{StaticResource ItemListItems}" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                Name="listItems"                
+                Grid.Row="2"
+                SelectionMode="Extended"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding ItemsView}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedItem}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template" Value="{StaticResource ItemListItems}" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
 
             <!--кол-во-->
             <Grid Grid.Row="3" Background="{StaticResource DarkBrush}">
@@ -193,6 +194,17 @@
                             Content="{StaticResource PlayIcon}"/>
                     </Button>
                     <Button
+                        Command="{Binding PrevPlay}"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource BaseButton}">
+                        <ContentControl  
+                            Width="24"
+                            Height="24"
+                            Margin="-6,-6,0,0"
+                            Content="{StaticResource PlayPrevIcon}"/>
+                    </Button>
+                    <Button
                         Command="{Binding PlayPause}"
                         CommandParameter="{Binding SelectedItem}"
                         Width="30"
@@ -205,11 +217,16 @@
                             Content="{StaticResource PauseIcon}"/>
                     </Button>
                     <Button
-                        Command="{Binding Testt}"
+                        Command="{Binding NextPlay}"
                         Width="30"
                         Height="30"
-                        Style="{StaticResource BaseButton}"
-                        />
+                        Style="{StaticResource BaseButton}">
+                        <ContentControl  
+                            Width="24"
+                            Height="24"
+                            Margin="-6,-6,0,0"
+                            Content="{StaticResource PlayNextIcon}"/>
+                    </Button>
 
                 </StackPanel>
 
@@ -280,27 +297,6 @@
                                 </Border.OpacityMask>
 
                                 <StackPanel HorizontalAlignment="Center">
-
-                                    <!--Descrition-->
-                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                        <TextBlock
-                                                Margin="10"
-                                                VerticalAlignment="Center"
-                                                Style="{StaticResource BaseText}"
-                                                Text="Описание: " />
-
-                                        <ScrollViewer
-                                                MaxHeight="100"
-                                                HorizontalScrollBarVisibility="Disabled"
-                                                VerticalScrollBarVisibility="Auto">
-                                            <TextBlock
-                                                    Margin="10"
-                                                    VerticalAlignment="Center"
-                                                    Style="{StaticResource BaseText}"
-                                                    Text="{Binding Descrition}"
-                                                    TextWrapping="Wrap" />
-                                        </ScrollViewer>
-                                    </UniformGrid>
 
                                     <!--Type-->
                                     <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">

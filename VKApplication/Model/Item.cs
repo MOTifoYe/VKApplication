@@ -12,9 +12,8 @@ namespace VKApplication.Model
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Descrition { get; set; }
-        public string Path { get; set; }
         public double Size { get; set; }
+        public Uri Path { get; set; }
         public DateTime DateOfChange{ get; set; }
     }
 }

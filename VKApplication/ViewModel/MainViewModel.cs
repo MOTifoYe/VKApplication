@@ -45,7 +45,7 @@ namespace VKApplication.ViewModel
                                     return (item.DateOfChange.Date == date.Date);
                                 return false;
 
-                            default: return item.Name.ToLower().Contains(SearchText.ToLower()) || item.Path.ToLower().Contains(SearchText.ToLower());
+                            default: return item.Name.ToLower().Contains(SearchText.ToLower()) || item.Path.ToString().ToLower().Contains(SearchText.ToLower());
                         }
                     }
 
@@ -140,14 +140,14 @@ namespace VKApplication.ViewModel
                                     Name = Path.GetFileNameWithoutExtension(file),
                                     Type = Path.GetExtension(file),
                                     Size = new FileInfo(file).Length / 1024.0,
+                                    Path = new Uri(Path.GetFullPath(file)),
                                     DateOfChange = new FileInfo(file).LastWriteTime,
-                                    Path = Path.GetFullPath(file),
                                 });
                                 added++;
 
                                 Task.Delay(1).Wait();
                             }
-                            SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
+                            //SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
                             OverlayService.GetInstance().Show($"Добавлено элементов: {added}", false);
                             Task.Delay(2000).Wait();
                             OverlayService.GetInstance().Close();
@@ -191,8 +191,8 @@ namespace VKApplication.ViewModel
                                             Name = Path.GetFileNameWithoutExtension(file),
                                             Type = Path.GetExtension(file),
                                             Size = new FileInfo(file).Length / 1024.0,
+                                            Path = new Uri(Path.GetFullPath(file)),
                                             DateOfChange = new FileInfo(file).LastWriteTime,
-                                            Path = Path.GetFullPath(file),
                                         };
 
                                         bool isExist = false;
@@ -220,7 +220,7 @@ namespace VKApplication.ViewModel
                                 }
                             }
 
-                            SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
+                            //SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
                             OverlayService.GetInstance().Show($"Добавлено элементов: {added}", false);
                             Task.Delay(2000).Wait();
                             OverlayService.GetInstance().Close();
@@ -288,13 +288,6 @@ namespace VKApplication.ViewModel
                 {
                     AudioService.GetInstance().StartPlay(item);
                 }, (item) => item != null);
-
-                //return new DelegateCommand<Item>((item) =>
-                //{
-                //    AudioService.GetMediaPlayer().Open(new Uri(item.Path));
-                //    AudioService.GetMediaPlayer().Play();
-
-                //}, (item) => item != null);
             }
         }
 
@@ -309,14 +302,35 @@ namespace VKApplication.ViewModel
             }
         }
 
-        public ICommand Testt
+        public ICommand NextPlay
         {
             get
             {
                 return new DelegateCommand(() =>
                 {
-                    MessageBox.Show($"{AudioService.GetMediaPlayer().CanPause}");
-                });
+                    ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
+                    if (!ItemsView.MoveCurrentToNext())
+                    {
+                        ItemsView.MoveCurrentToFirst();
+                    }
+                    AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
+                }, ()=> AudioService.GetInstance().CurrentItem != null);
+            }
+        }
+
+        public ICommand PrevPlay
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
+                    if (!ItemsView.MoveCurrentToPrevious())
+                    {
+                        ItemsView.MoveCurrentToLast();
+                    }
+                    AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
+                }, () => AudioService.GetInstance().CurrentItem != null);
             }
         }
 

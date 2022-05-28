@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using VKApplication.Model;
+using System.Collections.ObjectModel;
+using VKApplication.ViewModel;
+using System.ComponentModel;
 
 namespace VKApplication.Model
 {
@@ -13,28 +16,37 @@ namespace VKApplication.Model
     {
         private static AudioService _Instance = new AudioService();
         public static AudioService GetInstance() => _Instance;
-        private static MediaPlayer _MediaPlayer = new MediaPlayer();
-        public static MediaPlayer GetMediaPlayer() => _MediaPlayer;
+     
+        private AudioService() 
+        {
+            _MediaPlayer = new MediaPlayer();
+            _MediaPlayer.Volume = 0.5;
+            _MediaPlayer.MediaEnded += _MediaPlayer_MediaEnded;
+        }
 
-        private AudioService() { }
-        //public Action<string, bool> Show { get; set; }
+        private void _MediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+        
+        }
 
+        private static MediaPlayer _MediaPlayer { get; set; }
         public Item CurrentItem { get; set; }
         public bool IsPlaying { get; set; } = false;
 
+        
         public void StartPlay(Item item)
         {
             if (CurrentItem == null)
             {
                 CurrentItem = item;
-                _MediaPlayer.Open(new Uri(CurrentItem.Path));
+                _MediaPlayer.Open(CurrentItem.Path);
                 PlayPause();
             }
             else if (CurrentItem != item)
             {
                 if (IsPlaying) PlayPause();
                 CurrentItem = item;
-                _MediaPlayer.Open(new Uri(CurrentItem.Path));
+                _MediaPlayer.Open(CurrentItem.Path);
                 if (!IsPlaying) PlayPause();
             }
             else if (CurrentItem == item)

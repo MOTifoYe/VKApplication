@@ -49,26 +49,6 @@
 
                         <StackPanel HorizontalAlignment="Center">
 
-                            <!--Descrition-->
-                            <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
-                                <TextBlock
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BaseText}"
-                                    Text="Описание: " />
-
-                                <TextBox
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    AcceptsReturn="True"
-                                    AcceptsTab="True"
-                                    Style="{StaticResource BaseTextBox}"
-                                    Text="{Binding ItemInfo.Descrition, UpdateSourceTrigger=PropertyChanged}"
-                                    TextWrapping="Wrap" />
-                            </UniformGrid>
-
-                           
-
                             <!--Size-->
                             <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
                                 <TextBlock

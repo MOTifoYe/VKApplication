@@ -72,4 +72,20 @@
         </Viewbox>
     </Grid>
 
+    <Grid x:Key="PlayNextIcon">
+        <Viewbox Margin="1" Stretch="Uniform">
+            <Grid>
+                <Path Data="M14 10.83V7.5a1 1 0 1 1 2 0v9a1 1 0 0 1-2 0v-3.33l-8.15 4.66A1.23 1.23 0 0 1 4 16.77V7.23c0-.95 1.03-1.54 1.85-1.06z" Fill="White"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
+
+    <Grid x:Key="PlayPrevIcon">
+        <Viewbox Margin="1" Stretch="Uniform">
+            <Grid>
+                <Path Data="M10 13.17v3.33a1 1 0 1 1-2 0v-9a1 1 0 0 1 2 0v3.33l8.15-4.66c.82-.48 1.85.11 1.85 1.06v9.54c0 .95-1.03 1.54-1.85 1.06z" Fill="White"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
+
 </ResourceDictionary>
