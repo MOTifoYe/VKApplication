@@ -64,6 +64,15 @@ namespace VKApplication.ViewModel
                 OverlayService.GetInstance().ProgressBarVisible = vis;
             };
 
+            AudioService.GetMediaPlayer().MediaEnded += new EventHandler((s, e) =>
+            {
+                ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
+                if (!ItemsView.MoveCurrentToNext())
+                {
+                    ItemsView.MoveCurrentToFirst();
+                }
+                AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
+            });
 
             Items = File.Exists("ItemsData.json")
                   ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
@@ -142,6 +151,7 @@ namespace VKApplication.ViewModel
                                     Size = new FileInfo(file).Length / 1024.0,
                                     Path = new Uri(Path.GetFullPath(file)),
                                     DateOfChange = new FileInfo(file).LastWriteTime,
+
                                 });
                                 added++;
 
@@ -253,15 +263,15 @@ namespace VKApplication.ViewModel
         {
             get
             {
-                return new DelegateCommand<string>((url) =>
+                return new DelegateCommand<Uri>((uri) =>
                 {
-                    if (new Uri(url).IsFile)
+                    if (uri.IsFile)
                     {
-                        Process.Start(new ProcessStartInfo("explorer.exe", " /select, " + url));
+                        Process.Start(new ProcessStartInfo("explorer.exe", " /select, " + uri.ToString()));
                     }
                     else
                     {
-                        Process.Start(url);
+                        Process.Start(uri.ToString());
                     }
 
 
@@ -317,6 +327,8 @@ namespace VKApplication.ViewModel
                 }, ()=> AudioService.GetInstance().CurrentItem != null);
             }
         }
+
+        
 
         public ICommand PrevPlay
         {

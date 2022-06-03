@@ -29,6 +29,14 @@
             x:Key="AudioService"
             MethodName="GetInstance"
             ObjectType="{x:Type model:AudioService}" />
+        <ObjectDataProvider
+            x:Key="MediaPlayer"
+            MethodName="GetMediaPlayer"
+            ObjectType="{x:Type model:AudioService}" />
+        <ObjectDataProvider
+            x:Key="MediaTimeline"
+            MethodName="GetMediaTimeline"
+            ObjectType="{x:Type model:AudioService}" />
     </Window.Resources>
 
     <Window.DataContext>
@@ -160,13 +168,14 @@
             Grid.Column="1">
             
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
             <!-- Плеер -->
             <Grid
                 Grid.Row="0"
+                MinHeight="60"
                 Background="{StaticResource LightBrush}">
 
                 <Grid.ColumnDefinitions>
@@ -174,6 +183,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Кнопки -->
                 <StackPanel 
                     Grid.Column="0"
                     Margin="10,0"
@@ -230,25 +240,40 @@
 
                 </StackPanel>
 
+                <!-- Инфа о треке -->
                 <StackPanel
                     Grid.Column="1">
-
                     <TextBlock
-                        Margin="5"
+                        Margin="1"
                         VerticalAlignment="Center"
                         DataContext="{Binding SelectedItem}"
                         Style="{StaticResource BaseText}"
                         Text="{Binding Source={StaticResource AudioService}, Path=CurrentItem.Name }"
                         TextWrapping="Wrap"
                         />
-
-                    <TextBlock
-                        Margin="5"
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                        Margin="1"
                         VerticalAlignment="Center"
                         Style="{StaticResource BaseText}"
                         Text="{Binding Source={StaticResource AudioService}, Path=IsPlaying}"
                         TextWrapping="Wrap"
                         />
+                        <!-- Текущая позиция времени -->
+                        <TextBlock
+                            Margin="20,1,1,1"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource BaseText}"
+                            Text="{Binding Source={StaticResource AudioService}, Path=CurrentDuration, StringFormat=hh\\:mm\\:ss}"
+                            TextWrapping="Wrap" />
+                        <!-- ОБщее время трека -->
+                        <TextBlock
+                            Margin="20,1,1,1"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource BaseText}"
+                            Text="{Binding Source={StaticResource AudioService}, Path=TotalDuration, StringFormat=hh\\:mm\\:ss}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
                 </StackPanel>
                 
 
@@ -313,7 +338,7 @@
                                                 Text="{Binding Type}"
                                                 TextWrapping="Wrap" />
                                     </UniformGrid>
-
+                                    
                                     <!--Size-->
                                     <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
                                         <TextBlock

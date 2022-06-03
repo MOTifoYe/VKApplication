@@ -9,6 +9,8 @@ using VKApplication.Model;
 using System.Collections.ObjectModel;
 using VKApplication.ViewModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace VKApplication.Model
 {
@@ -16,21 +18,25 @@ namespace VKApplication.Model
     {
         private static AudioService _Instance = new AudioService();
         public static AudioService GetInstance() => _Instance;
-     
+
+        private static MediaPlayer _MediaPlayer { get; set; }
+        public static MediaPlayer GetMediaPlayer() => _MediaPlayer;
+   
+        private static MediaTimeline _MediaTimeline { get; set; }
+        public static MediaTimeline GetMediaTimeline() => _MediaTimeline;
+
         private AudioService() 
         {
             _MediaPlayer = new MediaPlayer();
-            _MediaPlayer.Volume = 0.5;
-            _MediaPlayer.MediaEnded += _MediaPlayer_MediaEnded;
+            _MediaTimeline = new MediaTimeline();
+
+            _MediaPlayer.MediaOpened += _MediaPlayer_MediaOpened;
+            _MediaPlayer.Volume = 0.1;
         }
 
-        private void _MediaPlayer_MediaEnded(object sender, EventArgs e)
-        {
-        
-        }
-
-        private static MediaPlayer _MediaPlayer { get; set; }
         public Item CurrentItem { get; set; }
+        public TimeSpan TotalDuration { get; set; }
+        public TimeSpan CurrentDuration { get; set; }
         public bool IsPlaying { get; set; } = false;
 
         
@@ -69,6 +75,11 @@ namespace VKApplication.Model
                 _MediaPlayer.Play();
                 IsPlaying = true;
             }
+        }
+
+        private void _MediaPlayer_MediaOpened(object sender, EventArgs e)
+        {
+            TotalDuration = _MediaPlayer.NaturalDuration.TimeSpan;
         }
     }
 }
