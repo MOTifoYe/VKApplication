@@ -64,15 +64,15 @@ namespace VKApplication.ViewModel
                 OverlayService.GetInstance().ProgressBarVisible = vis;
             };
 
-            AudioService.GetMediaPlayer().MediaEnded += new EventHandler((s, e) =>
-            {
-                ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
-                if (!ItemsView.MoveCurrentToNext())
-                {
-                    ItemsView.MoveCurrentToFirst();
-                }
-                AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
-            });
+            //AudioService.GetMediaPlayer().MediaEnded += new EventHandler((s, e) =>
+            //{
+            //    ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
+            //    if (!ItemsView.MoveCurrentToNext())
+            //    {
+            //        ItemsView.MoveCurrentToFirst();
+            //    }
+            //    AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
+            //});
 
             Items = File.Exists("ItemsData.json")
                   ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
@@ -328,8 +328,6 @@ namespace VKApplication.ViewModel
             }
         }
 
-        
-
         public ICommand PrevPlay
         {
             get
@@ -343,6 +341,33 @@ namespace VKApplication.ViewModel
                     }
                     AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
                 }, () => AudioService.GetInstance().CurrentItem != null);
+            }
+        }
+
+        public ICommand Test
+        {
+            get
+            {
+                return new DelegateCommand<Item>((item) =>
+                {
+                    AudioService.GetInstance().StartPlay(item);
+                }, (item) => item != null);
+            }
+        }
+
+        public ICommand Test1
+        {
+            get
+            {
+                return new DelegateCommand<int>((val) =>
+                {
+                    if (val == 0)
+                        AudioService.GetInstance().Pause();
+                    else if (val == 1)
+                        AudioService.GetInstance().Resume();
+                    else if (val == 2)
+                        AudioService.GetInstance().Add5();
+                }, (val) => AudioService.GetInstance().CurrentItem != null);
             }
         }
 

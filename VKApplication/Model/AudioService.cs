@@ -11,6 +11,7 @@ using VKApplication.ViewModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Animation;
+using System.Windows.Controls;
 
 namespace VKApplication.Model
 {
@@ -19,67 +20,56 @@ namespace VKApplication.Model
         private static AudioService _Instance = new AudioService();
         public static AudioService GetInstance() => _Instance;
 
-        private static MediaPlayer _MediaPlayer { get; set; }
-        public static MediaPlayer GetMediaPlayer() => _MediaPlayer;
-   
-        private static MediaTimeline _MediaTimeline { get; set; }
-        public static MediaTimeline GetMediaTimeline() => _MediaTimeline;
-
         private AudioService() 
         {
             _MediaPlayer = new MediaPlayer();
             _MediaTimeline = new MediaTimeline();
 
             _MediaPlayer.MediaOpened += _MediaPlayer_MediaOpened;
+            _MediaTimeline.CurrentTimeInvalidated += _MediaTimeline_CurrentTimeInvalidated;
+
             _MediaPlayer.Volume = 0.1;
-        }
-
-        public Item CurrentItem { get; set; }
-        public TimeSpan TotalDuration { get; set; }
-        public TimeSpan CurrentDuration { get; set; }
-        public bool IsPlaying { get; set; } = false;
-
-        
-        public void StartPlay(Item item)
-        {
-            if (CurrentItem == null)
-            {
-                CurrentItem = item;
-                _MediaPlayer.Open(CurrentItem.Path);
-                PlayPause();
-            }
-            else if (CurrentItem != item)
-            {
-                if (IsPlaying) PlayPause();
-                CurrentItem = item;
-                _MediaPlayer.Open(CurrentItem.Path);
-                if (!IsPlaying) PlayPause();
-            }
-            else if (CurrentItem == item)
-            {
-                _MediaPlayer.Stop();
-                _MediaPlayer.Play();
-                IsPlaying = true;
-            }
-        }
-
-        public void PlayPause()
-        {
-            if (IsPlaying == true)
-            {
-                _MediaPlayer.Pause();
-                IsPlaying = false;
-            }
-            else if (IsPlaying == false)
-            {
-                _MediaPlayer.Play();
-                IsPlaying = true;
-            }
         }
 
         private void _MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
-            TotalDuration = _MediaPlayer.NaturalDuration.TimeSpan;
+            if (_MediaPlayer.Clock.NaturalDuration.HasTimeSpan)
+                TotalTime = _MediaPlayer.Clock.NaturalDuration.TimeSpan;
         }
+
+        private void _MediaTimeline_CurrentTimeInvalidated(object sender, EventArgs e)
+        {
+            CurrentTime = _MediaPlayer.Clock.CurrentTime.Value;
+        }
+
+        public static MediaPlayer _MediaPlayer { get; set; }
+        public static MediaTimeline _MediaTimeline { get; set; }
+        public Item CurrentItem { get; set; }
+        public MediaClock Clock { get; set; }
+        public TimeSpan TotalTime { get; set; }
+        public TimeSpan CurrentTime { get; set; }
+
+                                                                                                       
+        public void StartPlay(Item item)
+        {
+            CurrentItem = item;
+            _MediaTimeline.Source = item.Path;
+            Clock = _MediaTimeline.CreateClock();
+            _MediaPlayer.Clock = Clock;
+        }                                                  
+        public void PlayPause()
+        {
+            if (_MediaPlayer.Clock.IsPaused == true)
+                _MediaPlayer.Clock.Controller.Resume();
+            else if (_MediaPlayer.Clock.IsPaused == false)
+                _MediaPlayer.Clock.Controller.Pause();
+        }
+
+        public void Pause() => _MediaPlayer.Clock.Controller.Pause();
+        public void Resume() => _MediaPlayer.Clock.Controller.Resume();
+        public void Add5() 
+        {
+            _MediaPlayer.Clock.Controller.Seek(new TimeSpan(0, 0, 0, 5), TimeSeekOrigin.BeginTime);
+        } 
     }
 }
