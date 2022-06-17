@@ -13,7 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-//using VKApplication.App.Model;
 using VKApplication.Model;
 using VKApplication.App.Views;
 using VKApplication.App.ViewModel;
@@ -22,6 +21,7 @@ namespace VKApplication.ViewModel
 {
     public class MainViewModel : BaseVM
     {
+        public string Title { get; set; } = Application.ResourceAssembly.FullName.Split(',')[0];
         public ObservableCollection<Item> Items { get; set; }
         public ICollectionView ItemsView { get; set; }
         public Page MainContent { get; set; }
@@ -64,15 +64,12 @@ namespace VKApplication.ViewModel
                 OverlayService.GetInstance().ProgressBarVisible = vis;
             };
 
-            //AudioService.GetMediaPlayer().MediaEnded += new EventHandler((s, e) =>
-            //{
-            //    ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
-            //    if (!ItemsView.MoveCurrentToNext())
-            //    {
-            //        ItemsView.MoveCurrentToFirst();
-            //    }
-            //    AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
-            //});
+            AudioService.GetMediaPlayer().MediaEnded += new EventHandler((s, e) =>
+            {
+                NextFilePlay();
+            });
+
+            
 
             Items = File.Exists("ItemsData.json")
                   ? JsonConvert.DeserializeObject<ObservableCollection<Item>>
@@ -83,6 +80,8 @@ namespace VKApplication.ViewModel
 
             BindingOperations.EnableCollectionSynchronization(Items, new object());
             ItemsView = CollectionViewSource.GetDefaultView(Items);
+
+            SelectedItem = Items.FirstOrDefault();
         }
 
         public ICommand Sort
@@ -157,7 +156,7 @@ namespace VKApplication.ViewModel
 
                                 Task.Delay(1).Wait();
                             }
-                            //SelectedItem = Items.FirstOrDefault(s => s.Path == opd.FileNames.FirstOrDefault());
+                            SelectedItem = Items.FirstOrDefault();
                             OverlayService.GetInstance().Show($"Добавлено элементов: {added}", false);
                             Task.Delay(2000).Wait();
                             OverlayService.GetInstance().Close();
@@ -300,7 +299,6 @@ namespace VKApplication.ViewModel
                 }, (item) => item != null);
             }
         }
-
         public ICommand PlayPause
         {
             get
@@ -311,23 +309,26 @@ namespace VKApplication.ViewModel
                 }, ()=>AudioService.GetInstance().CurrentItem != null);
             }
         }
-
+        public ICommand StopPlay
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    AudioService.GetInstance().Stop();
+                }, () => AudioService.GetInstance().CurrentItem != null);
+            }
+        }
         public ICommand NextPlay
         {
             get
             {
                 return new DelegateCommand(() =>
                 {
-                    ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
-                    if (!ItemsView.MoveCurrentToNext())
-                    {
-                        ItemsView.MoveCurrentToFirst();
-                    }
-                    AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
+                    NextFilePlay();
                 }, ()=> AudioService.GetInstance().CurrentItem != null);
             }
         }
-
         public ICommand PrevPlay
         {
             get
@@ -343,32 +344,46 @@ namespace VKApplication.ViewModel
                 }, () => AudioService.GetInstance().CurrentItem != null);
             }
         }
-
-        public ICommand Test
+        public ICommand MoveForward
         {
             get
             {
-                return new DelegateCommand<Item>((item) =>
+                return new DelegateCommand(() =>
                 {
-                    AudioService.GetInstance().StartPlay(item);
-                }, (item) => item != null);
+                    try
+                    {
+                        AudioService.GetInstance().MoveForward();
+                    }
+                    catch (Exception)
+                    {
+                        NextFilePlay();
+                    }
+
+                }, () => AudioService.GetInstance().CurrentItem != null);
+            }
+        }
+        public ICommand MoveBack
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    AudioService.GetInstance().MoveBack();
+                }, () => AudioService.GetInstance().CurrentItem != null);
             }
         }
 
-        public ICommand Test1
+
+
+
+        private void NextFilePlay()
         {
-            get
+            ItemsView.MoveCurrentTo(AudioService.GetInstance().CurrentItem);
+            if (!ItemsView.MoveCurrentToNext())
             {
-                return new DelegateCommand<int>((val) =>
-                {
-                    if (val == 0)
-                        AudioService.GetInstance().Pause();
-                    else if (val == 1)
-                        AudioService.GetInstance().Resume();
-                    else if (val == 2)
-                        AudioService.GetInstance().Add5();
-                }, (val) => AudioService.GetInstance().CurrentItem != null);
+                ItemsView.MoveCurrentToFirst();
             }
+            AudioService.GetInstance().StartPlay(ItemsView.CurrentItem as Item);
         }
 
         private System.Collections.Generic.List<string> GetFiles(string path, string pattern)

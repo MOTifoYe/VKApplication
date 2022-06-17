@@ -9,7 +9,7 @@
     <ProjectGuid>{2CBC299B-BCCE-4848-909F-7417404E6970}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>VKApplication.App</RootNamespace>
-    <AssemblyName>VKApplication.App</AssemblyName>
+    <AssemblyName>Тип74</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

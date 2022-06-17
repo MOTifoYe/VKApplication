@@ -10,32 +10,43 @@
                 Margin="10,2"
                 Background="{StaticResource MediumBrush}"
                 CornerRadius="2">
-                <TextBlock
-                    Name="txt"
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    FontWeight="Bold"
-                    Foreground="Gray"
-                    Style="{StaticResource BaseText}"
-                    Text="{Binding Name}"
-                    TextAlignment="Center"
-                    TextTrimming="CharacterEllipsis" />
-            </Border>
 
-            <Polygon
-                Name="triangle"
-                Margin="2"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Fill="{Binding ElementName=brd, Path=Background}"
-                Points="0,0 20,15, 0,30"
-                Visibility="Hidden" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Polygon
+                        Name="triangle"
+                        Margin="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Fill="{StaticResource DarkBaseBrush}"
+                        Points="0,0 20,15, 0,30"
+                        Visibility="Collapsed" />
+
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Name="txt"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontWeight="Bold"
+                        Foreground="Gray"
+                        Style="{StaticResource BaseText}"
+                        Text="{Binding Name}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+
+                </Grid>
+            </Border>
         </Grid>
 
         <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="true">
-                <Setter TargetName="brd" Property="Background" Value="{StaticResource UltraLightBaseBrush}" />
+                <Setter TargetName="brd" Property="Background" Value="{StaticResource LightBaseBrush}" />
                 <Setter TargetName="triangle" Property="Visibility" Value="Visible" />
                 <Setter TargetName="txt" Property="Foreground" Value="White" />
             </Trigger>
